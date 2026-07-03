@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wedding Invitation</title>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f4f1ea;
+        margin: 0;
+        font-family: sans-serif;
+    }
+
+    .envelope-wrapper {
+        position: relative;
+        cursor: pointer;
+        width: 350px;
+        height: 250px;
+        margin-top: 150px;
+    }
+
+    /* The back of the envelope */
+    .envelope-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: #d4c4a8;
+        border-radius: 5px 5px 0 0;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    /* The letter containing your image */
+    .letter {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 310px;
+        height: 230px; 
+        background-color: #fff;
+        border-radius: 5px;
+        transition: top 0.6s ease-in-out, height 0.6s ease-in-out, box-shadow 0.6s;
+        z-index: 2; 
+        overflow: hidden; 
+    }
+
+    .letter img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* Customizing the scrollbar for an elegant look */
+    .letter::-webkit-scrollbar {
+        width: 8px;
+    }
+    .letter::-webkit-scrollbar-track {
+        background: #f4f1ea;
+        border-radius: 5px;
+    }
+    .letter::-webkit-scrollbar-thumb {
+        background: #c8b696;
+        border-radius: 5px;
+    }
+    .letter::-webkit-scrollbar-thumb:hover {
+        background: #a69476;
+    }
+
+    /* The top flap of the envelope */
+    .flap {
+        position: absolute;
+        top: 0;
+        width: 0;
+        height: 0;
+        border-left: 175px solid transparent;
+        border-right: 175px solid transparent;
+        border-top: 130px solid #d4c4a8;
+        transform-origin: top;
+        transition: transform 0.5s ease-in-out, z-index 0.5s;
+        z-index: 4;
+    }
+
+    /* The side folded flaps of the envelope */
+    .envelope-front-sides {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-left: 175px solid #c8b696;
+        border-right: 175px solid #c8b696;
+        border-bottom: 125px solid transparent;
+        border-top: 125px solid transparent;
+        bottom: 0;
+        z-index: 3;
+    }
+
+    /* The bottom folded flap of the envelope */
+    .envelope-front-bottom {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-left: 175px solid transparent;
+        border-right: 175px solid transparent;
+        border-bottom: 125px solid #e2d5bd;
+        bottom: 0;
+        z-index: 3;
+    }
+
+    /* --- THE GUEST NAME TEXT --- */
+    .guest-name {
+        position: absolute;
+        bottom: 50px; /* Places it nicely on the bottom half of the envelope */
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: 'Times New Roman', serif; /* Elegant serif font */
+        font-size: 24px;
+        color: #8c734b; /* Gold/brown text color to match */
+        letter-spacing: 3px;
+        z-index: 4; /* Ensures it sits on top of the front envelope parts */
+        pointer-events: none; /* Stops the text from interfering with the click */
+    }
+
+    /* --- Animations when the wrapper gets the 'open' class --- */
+    .envelope-wrapper.open .flap {
+        transform: rotateX(180deg);
+        z-index: 1; 
+    }
+
+    .envelope-wrapper.open .letter {
+        top: -220px; 
+        height: 380px; 
+        z-index: 5; 
+        box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+        overflow-y: auto; 
+    }
+
+    .instructions {
+        position: absolute;
+        bottom: -40px;
+        width: 100%;
+        text-align: center;
+        color: #666;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+    <div class="envelope-wrapper" id="invite-envelope">
+        <div class="envelope-back"></div>
+        <div class="letter">
+            <!-- Ensure your invitation image is in the same folder -->
+            <img src="images/same2.png" alt="Wedding Invitation">
+        </div>
+        <div class="flap"></div>
+        <div class="envelope-front-sides"></div>
+        <div class="envelope-front-bottom"></div>
+        
+        <!-- The Name -->
+        <div class="guest-name">MOHAMMAD ANSAR UL HAQ</div>
+        
+        <div class="instructions">Click to Open</div>
+    </div>
+
+    <script>
+        const envelope = document.getElementById('invite-envelope');
+        envelope.addEventListener('click', () => {
+            envelope.classList.toggle('open');
+            
+            const instructions = document.querySelector('.instructions');
+            if (envelope.classList.contains('open')) {
+                instructions.innerText = "Click to Close";
+            } else {
+                instructions.innerText = "Click to Open";
+                // Reset scroll position to top when closed
+                document.querySelector('.letter').scrollTop = 0; 
+            }
+        });
+
+        // Prevent the envelope from closing when you click inside the letter to scroll
+        const letter = document.querySelector('.letter');
+        letter.addEventListener('click', (event) => {
+            event.stopPropagation();
+        });
+    </script>
+
+</body>
+</html>
